@@ -45,7 +45,18 @@ router.get('/add-product', (req,res)=>{
 router.post('/add-product',(req,res)=>{
   console.log(req.body)
   console.log(req.files.image)
-  productHelpers.addProduct(req.body)
+
+  productHelpers.addProduct(req.body,(id)=>{
+    let image = req.files.image
+    console.log(id)
+    image.mv('./public/product-images' + id + '.jpg',(err,data)=>{
+      if (!err){
+        res.render('admin/add-product')
+      }else{
+        console.log(err)
+      }
+    })
+  })
 })
 
 module.exports = router;
